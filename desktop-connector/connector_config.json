@@ -1,0 +1,8 @@
+{
+    "api_url": "http://localhost:8000/api/v1",
+    "tally_host": "localhost",
+    "tally_port": 9000,
+    "poll_interval": 5,
+    "retry_attempts": 3,
+    "log_level": "INFO"
+}

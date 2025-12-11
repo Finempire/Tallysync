@@ -1,0 +1,80 @@
+# Django & Core
+Django
+djangorestframework
+django-cors-headers
+django-filter
+
+# Multi-tenancy
+django-tenants
+
+# Authentication
+djangorestframework-simplejwt==5.3.1
+PyJWT==2.8.0
+
+# Database
+psycopg2-binary
+dj-database-url==2.1.0
+
+# Task Queue
+celery
+redis
+django-celery-beat
+
+# File Processing
+pandas
+openpyxl==3.1.2
+xlrd==2.0.1
+tabula-py==2.9.0
+PyPDF2==3.0.1
+pdf2image==1.16.3
+
+# OCR
+google-cloud-vision==3.5.0
+boto3==1.34.14
+pytesseract==0.3.10
+Pillow
+cryptography
+
+# XML Processing
+lxml
+
+# PDF Generation
+reportlab
+WeasyPrint
+
+# Payments
+razorpay==1.4.1
+
+# Email & SMS
+sendgrid==6.11.0
+twilio==8.10.3
+
+# HTTP Client
+requests==2.31.0
+httpx==0.26.0
+
+# Validation
+python-dateutil==2.8.2
+
+# Security
+cryptography==41.0.7
+
+# Environment
+python-decouple==3.8
+
+# Server
+gunicorn==21.2.0
+uvicorn==0.25.0
+
+# Monitoring
+sentry-sdk==1.39.1
+
+# Development
+ipython==8.19.0
+django-extensions==3.2.3
+
+# Testing
+pytest==7.4.4
+pytest-django==4.7.0
+pytest-cov==4.1.0
+factory-boy==3.3.0
