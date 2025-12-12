@@ -130,6 +130,11 @@ with st.sidebar:
                     st.experimental_rerun()
                 except requests.HTTPError as exc:  # pragma: no cover - Streamlit surface
                     st.error(f"Login failed: {exc.response.text}")
+                except requests.RequestException as exc:  # pragma: no cover - Streamlit surface
+                    st.error(
+                        "Login failed: unable to reach the API at "
+                        f"{API_BASE_URL}. Please verify the backend is running.\n{exc}"
+                    )
 
 
 def require_auth() -> Optional[str]:
@@ -162,7 +167,14 @@ def cached_statements(token: str) -> List[Dict[str, Any]]:
 
 def render_bank_upload(token: str) -> None:
     st.subheader("Upload bank statement")
-    accounts = cached_bank_accounts(token)
+    try:
+        accounts = cached_bank_accounts(token)
+    except requests.RequestException as exc:  # pragma: no cover - Streamlit surface
+        st.error(
+            "Unable to load bank accounts: unable to reach the API at "
+            f"{API_BASE_URL}. Please verify the backend is running.\n{exc}"
+        )
+        return
     if accounts:
         account_labels = [f"{acc['bank_name']} ({acc['account_number']})" for acc in accounts]
         selected_index = st.selectbox(
@@ -199,6 +211,11 @@ def render_bank_upload(token: str) -> None:
             cached_statements.clear()
         except requests.HTTPError as exc:  # pragma: no cover - Streamlit surface
             st.error(f"Upload failed: {exc.response.text}")
+        except requests.RequestException as exc:  # pragma: no cover - Streamlit surface
+            st.error(
+                "Upload failed: unable to reach the API at "
+                f"{API_BASE_URL}. Please verify the backend is running.\n{exc}"
+            )
 
 
 def _format_statements_table(statements: Iterable[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -220,7 +237,14 @@ def _format_statements_table(statements: Iterable[Dict[str, Any]]) -> List[Dict[
 
 def render_statements(token: str) -> Optional[int]:
     st.subheader("Bank statements")
-    statements = cached_statements(token)
+    try:
+        statements = cached_statements(token)
+    except requests.RequestException as exc:  # pragma: no cover - Streamlit surface
+        st.error(
+            "Unable to load statements: unable to reach the API at "
+            f"{API_BASE_URL}. Please verify the backend is running.\n{exc}"
+        )
+        return None
     if not statements:
         st.info("No statements found yet. Upload one to get started.")
         return None
@@ -257,6 +281,11 @@ def render_transactions(token: str, statement_id: int) -> None:
         st.dataframe(rows, use_container_width=True, hide_index=True)
     except requests.HTTPError as exc:  # pragma: no cover - Streamlit surface
         st.error(f"Unable to load transactions: {exc.response.text}")
+    except requests.RequestException as exc:  # pragma: no cover - Streamlit surface
+        st.error(
+            "Unable to load transactions: unable to reach the API at "
+            f"{API_BASE_URL}. Please verify the backend is running.\n{exc}"
+        )
 
 
 def main() -> None:
