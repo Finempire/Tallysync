@@ -37,7 +37,9 @@ class VoucherListCreateView(generics.ListCreateAPIView):
              elif type_filter == 'journal':
                   queryset = queryset.filter(voucher_type__in=['journal', 'payment', 'receipt', 'contra'])
 
-        return queryset.select_related('company', 'party_ledger').order_by('-date', '-created_at')
+        return queryset.select_related('company', 'party_ledger') \
+            .prefetch_related('entries__ledger') \
+            .order_by('-date', '-created_at')
     
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user, source='manual')
@@ -45,7 +47,8 @@ class VoucherListCreateView(generics.ListCreateAPIView):
 
 class VoucherDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = VoucherSerializer
-    queryset = Voucher.objects.all()
+    queryset = Voucher.objects.select_related('company', 'party_ledger') \
+        .prefetch_related('entries__ledger')
 
 
 class VoucherApproveView(APIView):
